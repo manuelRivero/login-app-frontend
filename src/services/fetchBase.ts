@@ -5,8 +5,9 @@ import type {
 } from '@reduxjs/toolkit/query'
 
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
-import { logOut } from '../../features/auth/authSlice'
+
 import { type RootState } from '../store'
+import { logout } from '../store/authSlice'
 
 const baseUrl = `${process.env.REACT_APP_API_URL}`
 
@@ -14,9 +15,9 @@ const baseQuery = fetchBaseQuery({
   baseUrl,
   credentials: 'same-origin',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`)
+    const authState = (getState() as RootState).auth
+    if(authState.token){
+      headers.set('authorization', `Bearer ${authState.token}`)
     }
     return headers
   }
@@ -33,7 +34,7 @@ const fetchBase: BaseQueryFn<
     result.error != null &&
     (result.error.status === 401 || result.error.status === 500)
   ) {
-    api.dispatch(logOut())
+    api.dispatch(logout())
   }
   return result
 }

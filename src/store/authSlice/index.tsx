@@ -1,22 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface User {
-    data?:{
+    data:{
         name:string;
         email:string;
         lastName:string;
+        avatar?:string;
     }
-    tokens: {
-        access:string;
-        refresh:string
-    }
+    
 }
 
 export interface State {
-    user: null | User
+    user: null | User,
+    token: string;
 }
+const userDataString = localStorage.getItem('user')
+const userData = userDataString !== null ? JSON.parse(userDataString) : null
+
 const initialState = {
-  user:null
+  token: userData?.token || null,
+  user: userData?.user || null
 }
 
 export const authSlice = createSlice({
