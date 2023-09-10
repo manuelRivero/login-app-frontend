@@ -16,6 +16,7 @@ import Step1 from "./forms/step1";
 import Step2 from "./forms/step2";
 import Step3 from "./forms/step3";
 import CustomButton from "../../components/shared/customButton";
+import { Link } from "react-router-dom";
 
 export default function RegisterModal() {
   //states
@@ -77,13 +78,12 @@ export default function RegisterModal() {
         justifyContent="center"
       >
         <Grid item>
+        <Typography variant={"h2"} component={"h2"} align="center">
+            Registro
+          </Typography>
           <Box
             sx={{
-              position: "absolute" as "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "90%",
+              marginTop:2,
               maxWidth: 400,
               bgcolor: "background.paper",
               boxShadow: 24,
@@ -96,18 +96,7 @@ export default function RegisterModal() {
                 <ArrowBackIcon />
               </IconButton>
             )}
-            <Box>
-              <Typography
-                variant="h5"
-                component={"h5"}
-                sx={{
-                  textAlign: "center",
-                  marginBottom: "1rem",
-                }}
-              >
-                Registro
-              </Typography>
-            </Box>
+          
 
             {step === 4 && (
               <Stack
@@ -132,6 +121,14 @@ export default function RegisterModal() {
                 initialValues={userData}
                 error={step1Error}
               />
+            )}
+            {step === 1 && (
+              <Box sx={{ marginTop: 2 }}>
+              <Typography align="center" variant={"body1"} component={"p"}>
+                ¿Ya tienes una cuenta?{" "}
+                <Link to="/auth/login">inicia sesión</Link>
+              </Typography>
+            </Box>
             )}
 
             {step === 2 && (

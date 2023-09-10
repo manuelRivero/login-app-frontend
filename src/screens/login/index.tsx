@@ -41,7 +41,7 @@ export default function Login() {
         justifyContent="center"
       >
         <Grid item>
-          <Typography variant={"h1"} component={"h1"} align="center">
+          <Typography variant={"h2"} component={"h2"} align="center">
             Inicia sesión
           </Typography>
           <Box sx={{ background: "#fff", padding: 2, borderRadius: 2, marginTop:2 }}>
@@ -89,7 +89,7 @@ export default function Login() {
         />
       </Box>
               <Box sx={{ marginBottom: 2 }}>
-                <Typography variant={"body1"} component={"small"}>
+                <Typography align="center" variant={"body1"} component={"p"}>
                   ¿No tienes una cuenta?{" "}
                   <Link to="/auth/register">registrate aquí</Link>
                 </Typography>
