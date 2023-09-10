@@ -6,15 +6,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "../../components/shared/customButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../../components/shared/customInput";
 // form
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { LoginRequest, useLoginMutation } from "../../services/authApi";
+import { useAppDispatch } from "../../hooks/store";
+import { setUser } from "../../store/authSlice";
 
 const schema = yup.object({
   email: yup.string().email("Email invalido").required("Campo requerido"),
@@ -22,20 +24,30 @@ const schema = yup.object({
 });
 
 export default function Login() {
-  const [loginUser, { isLoading}] = useLoginMutation();
-  const [formAlert, setFormAlert] = useState<string | null>(null)
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [loginUser, { isLoading, data }] = useLoginMutation();
+  const [formAlert, setFormAlert] = useState<string | null>(null);
   const { control, handleSubmit } = useForm<LoginRequest>({
     resolver: yupResolver(schema),
   });
 
   const submit = async (values: LoginRequest) => {
     try {
-      await loginUser(values).unwrap()
-      
-    } catch (error:unknown) {
-      setFormAlert(error.data.message)
+      setFormAlert(null);
+      await loginUser(values).unwrap();
+    } catch (error: any) {
+      console.log("error", error);
+      setFormAlert(error.data.message);
     }
   };
+  useEffect(()=>{
+    if(data){
+      console.log("data", data)
+      dispatch(setUser({user:data.user, token:data.token}))
+      navigate("/")
+    }
+  }, [data])
   return (
     <Container>
       <Grid
@@ -109,9 +121,9 @@ export default function Login() {
                   <Link to="/auth/register">registrate aquí</Link>
                 </Typography>
               </Box>
-            {formAlert && (
+              {formAlert && (
                 <Typography
-                align="center"
+                  align="center"
                   sx={{ margin: ".8rem", fontSize: 12 }}
                   color={"error"}
                 >
