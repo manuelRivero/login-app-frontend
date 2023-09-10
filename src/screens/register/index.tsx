@@ -7,7 +7,7 @@ import {
   Container,
   Grid,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import ProfileAvatar from "../../components/shared/avatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -96,7 +96,6 @@ export default function RegisterModal() {
                 <ArrowBackIcon />
               </IconButton>
             )}
-            <Box></Box>
             <Box>
               <Typography
                 variant="h5"
@@ -151,46 +150,26 @@ export default function RegisterModal() {
               />
             )}
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              {step === 4 && (
+            {step === 4 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "1rem",
+                  marginTop: "1rem",
+                }}
+              >
                 <CustomButton
                   type="button"
                   color="primary"
                   variant="contained"
-                  title="Ingresar"
+                  title="Registrarme"
                   cb={() => submit()}
                   disabled={loadingSubmit}
                   isLoading={loadingSubmit}
                 />
-              )}
-            </Box>
-            {step <= 1 && (
-              <>
-                <Box
-                  sx={{
-                    height: "1px",
-                    border: "solid 1px #c2c2c2",
-                    marginTop: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                ></Box>
-              </>
+              </Box>
             )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            ></Box>
           </Box>
         </Grid>
       </Grid>
