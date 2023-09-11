@@ -5,6 +5,7 @@ import Login from "../screens/login";
 import Register from "../screens/register";
 import AuthLayout from "../components/layouts/auth";
 import MainLayout from "../components/layouts/main";
+import Posts from "../screens/posts";
 
 export default function MainRoutes() {
   const { user } = useSelector((state: any) => state.auth);
@@ -23,7 +24,7 @@ export default function MainRoutes() {
       ) : (
         <>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<h1>main content</h1>} />
+            <Route index element={<Posts />} />
           </Route>
           <Route path="*" element={<h1>404</h1>} />
         </>

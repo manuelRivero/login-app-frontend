@@ -69,7 +69,6 @@ export default function ProfileAvatar({ onChange, isSameUser, avatar = null }: P
             overlap="circular"
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             badgeContent={
-              isSameUser ? 
               <Box
                 sx={(theme) => ({
                   background: "#fff",
@@ -90,7 +89,7 @@ export default function ProfileAvatar({ onChange, isSameUser, avatar = null }: P
                 <label htmlFor="file-input">
                   <EditIcon />
                 </label>
-              </Box> : null
+              </Box>
             }
           >
             {cropImageSrc && (

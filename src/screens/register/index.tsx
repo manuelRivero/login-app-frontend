@@ -16,11 +16,15 @@ import Step1 from "./forms/step1";
 import Step2 from "./forms/step2";
 import Step3 from "./forms/step3";
 import CustomButton from "../../components/shared/customButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "../../services/authApi";
 
 export default function RegisterModal() {
+  const navigate = useNavigate();
+
+  const [registerUser, { isLoading, data }] = useRegisterUserMutation();
   //states
-  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
+  const [formAlert, setFormAlert] = useState<string | null>(null);
   const [step, setStep] = useState<number>(1);
   const [userData, setUserData] = useState<any | null>(null);
   const [resetForms, setResetForms] = useState<boolean>(false);
@@ -30,23 +34,19 @@ export default function RegisterModal() {
   }>(null);
 
   const submit = async () => {
-    setLoadingSubmit(true);
     const form = new FormData();
     Object.keys(userData).forEach((key) => {
       form.append(key, userData[key]);
     });
     try {
-      // const response = await register(form);
-      // to do
-      // register request
-      // success modal
-      // redirect to login
+      setFormAlert(null)
+      const response = await registerUser(form).unwrap();
+      console.log("response", response);
+      if (response.ok) {
+        navigate("/auth/login");
+      }
     } catch (error: any) {
-      console.log("error", error.response.data);
-      // to do
-      // error modal
-    } finally {
-      setLoadingSubmit(false);
+      setFormAlert(error.data.error);
     }
   };
 
@@ -70,20 +70,21 @@ export default function RegisterModal() {
   };
 
   return (
-    <Container>
+    <Container sx={{ height: "100vh" }}>
       <Grid
+        sx={{ height: "100%" }}
         container
         alignItems="center"
         direction="row"
         justifyContent="center"
       >
         <Grid item>
-        <Typography variant={"h2"} component={"h2"} align="center">
+          <Typography variant={"h2"} component={"h2"} align="center">
             Registro
           </Typography>
           <Box
             sx={{
-              marginTop:2,
+              marginTop: 2,
               maxWidth: 400,
               bgcolor: "background.paper",
               boxShadow: 24,
@@ -96,7 +97,6 @@ export default function RegisterModal() {
                 <ArrowBackIcon />
               </IconButton>
             )}
-          
 
             {step === 4 && (
               <Stack
@@ -124,11 +124,11 @@ export default function RegisterModal() {
             )}
             {step === 1 && (
               <Box sx={{ marginTop: 2 }}>
-              <Typography align="center" variant={"body1"} component={"p"}>
-                ¿Ya tienes una cuenta?{" "}
-                <Link to="/auth/login">inicia sesión</Link>
-              </Typography>
-            </Box>
+                <Typography align="center" variant={"body1"} component={"p"}>
+                  ¿Ya tienes una cuenta?{" "}
+                  <Link to="/auth/login">inicia sesión</Link>
+                </Typography>
+              </Box>
             )}
 
             {step === 2 && (
@@ -148,24 +148,35 @@ export default function RegisterModal() {
             )}
 
             {step === 4 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "1rem",
-                  marginTop: "1rem",
-                }}
-              >
-                <CustomButton
-                  type="button"
-                  color="primary"
-                  variant="contained"
-                  title="Registrarme"
-                  cb={() => submit()}
-                  disabled={loadingSubmit}
-                  isLoading={loadingSubmit}
-                />
-              </Box>
+              <>
+                {formAlert && (
+                  <Typography
+                    align="center"
+                    sx={{ margin: ".8rem", fontSize: 12 }}
+                    color={"error"}
+                  >
+                    {formAlert}
+                  </Typography>
+                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "1rem",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <CustomButton
+                    type="button"
+                    color="primary"
+                    variant="contained"
+                    title="Registrarme"
+                    cb={() => submit()}
+                    disabled={isLoading}
+                    isLoading={isLoading}
+                  />
+                </Box>
+              </>
             )}
           </Box>
         </Grid>

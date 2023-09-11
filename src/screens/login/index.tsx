@@ -37,20 +37,20 @@ export default function Login() {
       setFormAlert(null);
       await loginUser(values).unwrap();
     } catch (error: any) {
-      console.log("error", error);
       setFormAlert(error.data.message);
     }
   };
-  useEffect(()=>{
-    if(data){
-      console.log("data", data)
-      dispatch(setUser({user:data.user, token:data.token}))
-      navigate("/")
+  useEffect(() => {
+    if (data) {
+      console.log("data", data);
+      dispatch(setUser({ user: data.user, token: data.token }));
+      navigate("/");
     }
-  }, [data])
+  }, [data]);
   return (
-    <Container>
+    <Container sx={{ height: "100vh" }}>
       <Grid
+        sx={{ height: "100%" }}
         container
         alignItems="center"
         direction="row"

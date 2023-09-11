@@ -19,7 +19,7 @@ export interface LoginRequest {
 }
 
 export interface RegisterResponse {
-
+ok:boolean
 }
 
 export const authApi = createApi({
@@ -37,7 +37,7 @@ export const authApi = createApi({
         return {
           url: 'auth/register',
           method: 'POST',
-          body: { data },
+          body: data,
           formData:true
         }
       }
